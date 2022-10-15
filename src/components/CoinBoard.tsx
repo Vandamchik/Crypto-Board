@@ -1,6 +1,6 @@
 import React from 'react';
-import '../styles/CoinBoard.css'
 import { IProps } from "../modules/modules";
+import '../styles/CoinBoard.css'
 
 
 export const CoinBoard = ( props: IProps) => {

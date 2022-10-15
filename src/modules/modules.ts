@@ -38,3 +38,4 @@ export interface IProps {
     priceChange: number
     marketcap: number
 }
+
