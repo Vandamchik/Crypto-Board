@@ -5,7 +5,7 @@ import { fetchCrypto } from "../store/reducers/ActionCreator";
 import '../styles/App.css'
 
 
-export const App: React.FC = () => {
+export function App(): JSX.Element {
     const dispatch = useAppDispatch()
     const { crypto, isLoading, error } = useAppSelector(state => state.cryptoReducer)
     const [search, setSearch] = useState<string>("")
@@ -53,7 +53,7 @@ export const App: React.FC = () => {
                    volume={coin.market_cap}
                    price={coin.current_price}
                    priceChange={coin.price_change_percentage_24h}
-                   marketcap={coin.total_volume}
+                   id={coin.id}
                />
             ) }
         </div>

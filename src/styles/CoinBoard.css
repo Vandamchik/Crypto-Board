@@ -1,6 +1,8 @@
 .coinBoard_container {
     display: flex;
+    flex-direction: column;
     align-items: center;
+    border-bottom: 1px solid whitesmoke;
 }
 
 .coinBoard_row {
@@ -10,7 +12,6 @@
     justify-content: flex-start;
     align-items: center;
     height: 80px;
-    border-bottom: 1px solid whitesmoke;
 }
 
 .coinBoard_img {
@@ -41,14 +42,25 @@
     padding: 0 10px;
 }
 
-.coinBoard_marketcap {
-
-}
-
 .red {
     color: red;
 }
 
 .green {
     color: green;
+}
+
+.chartRate_btn {
+    padding: 10px;
+    background-color: darkslategray;
+    color: white;
+    border-radius: 20px;
+}
+
+.chartRate_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 600px;
 }

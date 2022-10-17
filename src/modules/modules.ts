@@ -28,6 +28,12 @@ export interface ICryptoData  {
 
 }
 
+export interface IChartData {
+    market_caps: number[]
+    prices: number[]
+    total_volumes: number[]
+}
+
 
 export interface IProps {
     name: string
@@ -36,6 +42,6 @@ export interface IProps {
     price: number
     volume: number
     priceChange: number
-    marketcap: number
+    id:string
 }
 

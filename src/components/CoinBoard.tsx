@@ -1,18 +1,68 @@
-import React from 'react';
-import { IProps } from "../modules/modules";
+import React, { useState } from 'react';
+import { IChartData, IProps } from "../modules/modules";
 import '../styles/CoinBoard.css'
+import type { ChartData, ChartOptions } from 'chart.js';
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend,
+} from 'chart.js';
+import { Line } from 'react-chartjs-2';
+import moment from 'moment'
+import axios, {AxiosResponse} from "axios";
+
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend
+);
 
 
-export const CoinBoard = ( props: IProps) => {
-const {
-    name,
-    image,
-    symbol,
-    price,
-    volume,
-    priceChange,
-    marketcap
-    } = props
+
+export function CoinBoard( props: IProps): JSX.Element {
+    const { name, image, symbol, price, volume, priceChange, id } = props;
+    const [chartBtn, setChartBtn] = useState<boolean>(false);
+    const [chartData, setChartData] = useState<ChartData<'line'>>();
+    const [chartOptions, setChartOptions] = useState<ChartOptions<'line'>>({
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top' as const,
+            },
+            title: {
+                display: true,
+                text: 'Chart.js Line Chart',
+            },
+        },
+    })
+
+    function btnHandler(event:React.MouseEvent<HTMLButtonElement>){
+        setChartBtn(prev => !prev)
+        axios.get<IChartData>(`https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=30&interval=daily`)
+            .then((response:AxiosResponse) => {
+             setChartData({
+                 labels: response.data.prices.map((price: number[]) => {return moment.unix(price[0] / 1000).format("MM-DD")}),
+                 datasets: [
+                     {
+                         label: 'Dataset 1',
+                         data: response.data.prices.map((price: number[]) => {return price[1]}),
+                         borderColor: 'rgb(255, 99, 132)',
+                         backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                     },
+                 ],
+             })
+            })
+    }
+
 
     return (
         <div className="coinBoard_container">
@@ -24,13 +74,20 @@ const {
                     <p className="coinBoard_volume">${volume.toLocaleString()}</p>
                 { priceChange < 0 ? (
                     <p className="coinBoard_percent red">{priceChange.toFixed(2)}%</p>
-                ) : (
+                    ) : (
                     <p className="coinBoard_percent green">{priceChange.toFixed(2)}%</p>
                 )}
-                    <p className="coinBoard_marketcap">
-                        Mkt Cap: ${marketcap.toLocaleString()}
-                    </p>
+                    <button
+                        value={id}
+                        className="chartRate_btn"
+                        onClick={btnHandler}
+                    >Show Chart</button>
             </div>
+                { chartBtn && <div className="chartRate_container">
+                    work {id}
+                    {chartData ? <Line data={chartData} options={chartOptions} /> : <p>Loading...</p>}
+                </div>}
+
         </div>
     );
-};
+}
