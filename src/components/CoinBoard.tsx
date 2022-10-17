@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { IChartData, IProps } from "../modules/modules";
 import '../styles/CoinBoard.css'
 import type { ChartData, ChartOptions } from 'chart.js';
@@ -31,6 +31,7 @@ ChartJS.register(
 export function CoinBoard( props: IProps): JSX.Element {
     const { name, image, symbol, price, volume, priceChange, id } = props;
     const [chartBtn, setChartBtn] = useState<boolean>(false);
+    const [chartRange, setChartRange] = useState<string>("7")
     const [chartData, setChartData] = useState<ChartData<'line'>>();
     const [chartOptions, setChartOptions] = useState<ChartOptions<'line'>>({
         responsive: true,
@@ -40,15 +41,16 @@ export function CoinBoard( props: IProps): JSX.Element {
             },
             title: {
                 display: true,
-                text: 'Chart.js Line Chart',
+                text: 'Cypto Chart',
             },
         },
     })
 
+
     function btnHandler(event:React.MouseEvent<HTMLButtonElement>){
         setChartBtn(prev => !prev)
-        axios.get<IChartData>(`https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=30&interval=daily`)
-            .then((response:AxiosResponse) => {
+            axios.get<IChartData>(`https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=30&interval=daily`)
+                .then((response:AxiosResponse) => {
              setChartData({
                  labels: response.data.prices.map((price: number[]) => {return moment.unix(price[0] / 1000).format("MM-DD")}),
                  datasets: [
@@ -61,6 +63,24 @@ export function CoinBoard( props: IProps): JSX.Element {
                  ],
              })
             })
+    }
+
+    function changeHandler(limit: string) {
+        axios.get<IChartData>(`https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=${limit}&interval=daily`)
+            .then((response:AxiosResponse) => {
+                setChartData({
+                    labels: response.data.prices.map((price: number[]) => {return moment.unix(price[0] / 1000).format("MM-DD")}),
+                    datasets: [
+                        {
+                            label: 'Dataset 1',
+                            data: response.data.prices.map((price: number[]) => {return price[1]}),
+                            borderColor: 'rgb(255, 99, 132)',
+                            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                        },
+                    ],
+                })
+            })
+
     }
 
 
@@ -79,14 +99,26 @@ export function CoinBoard( props: IProps): JSX.Element {
                 )}
                     <button
                         value={id}
-                        className="chartRate_btn"
+                        className='chartRate_btn'
                         onClick={btnHandler}
-                    >Show Chart</button>
+                    >{chartBtn ? "Hide Chart" : "Show Chart"}</button>
             </div>
                 { chartBtn && <div className="chartRate_container">
-                    work {id}
+
+                    <select
+                        onChange={(event) => {
+                            setChartRange( event.target.value);
+                            console.log(chartRange)
+                            changeHandler(chartRange)
+                        }
+                    }
+                    >
+                        <option value="7">30 days</option>
+                        <option value="30">7 days</option>
+                    </select>
+
                     {chartData ? <Line data={chartData} options={chartOptions} /> : <p>Loading...</p>}
-                </div>}
+                </div> }
 
         </div>
     );
