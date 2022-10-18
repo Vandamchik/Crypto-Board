@@ -1,4 +1,6 @@
 .coinBoard_container {
+    width: 100%;
+    margin: 5px 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -6,12 +8,19 @@
 }
 
 .coinBoard_row {
-    padding: 10px;
+    width: 100%;
     display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
+    justify-content: space-evenly;
     align-items: center;
     height: 80px;
+    text-align: center;
+}
+
+.coinBoard_row_coin-title {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 150px;
 }
 
 .coinBoard_img {
@@ -22,61 +31,67 @@
 
 .coinBoard_name {
     font-weight: bold;
-    width: 100px;
+    margin-right: 10px;
 }
 
 .coinBoard_symbol {
     text-transform: uppercase;
-    padding: 0 10px;
 }
 
 .coinBoard_price {
-    padding: 0 10px;
+    width: 100px;
+    text-align: start;
 }
 
 .coinBoard_volume {
-    padding: 0 10px;
+    width: 150px;
+    text-align: start;
 }
 
 .coinBoard_percent {
-    padding: 0 10px;
+    width: 100px;
+    text-align: center;
+    font-weight: 600;
 }
 
 .red {
-    color: red;
+    color: #ff0000;
 }
 
 .green {
-    color: green;
+    color: #00ff03;
 }
 
 .coinBoard_btn {
     padding: 10px;
-    background-color: darkslategray;
-    color: white;
+    color: black;
+    border: 1px solid #07bcb4;
     border-radius: 20px;
+    outline: none;
     cursor: pointer;
+    width: 100px;
 }
 .coinBoard_btn:hover {
-    color: lightgreen;
+    box-shadow: 5px 3px 3px grey;
 }
 
 .chartRate_container {
+    width: 650px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 600px;
 }
 .chartRate_select {
-    padding: 5px;
-    width: 100px;
+    width: 150px;
+    margin-bottom: 15px;
+    padding: 7px;
     border-radius: 7px;
     cursor: pointer;
-    background-color: antiquewhite;
-    border: none;
+    color: black;
+    border: 1px solid #00d8ce;
     outline: none;
 }
 .chartRate_select:hover {
-    color: lightsalmon;
+    box-shadow: 5px 3px 3px grey;
 }

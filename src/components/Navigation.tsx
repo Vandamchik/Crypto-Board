@@ -4,7 +4,6 @@ import '../styles/Navigation.css'
 
 export function Navigation() {
 
-
     return (
         <nav className="navigation-wrapper">
             <h3>Crypto App</h3>

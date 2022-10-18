@@ -2,12 +2,15 @@ import React from 'react';
 import '../styles/TitleBoard.css'
 
 export function TitleBoard():JSX.Element {
+
     return (
         <div className="titleBoard-wrapper">
-        <p>Coin</p>
-        <p>Current Price</p>
-        <p>Market Capitalization</p>
-        <p>1 day %</p>
+            <p style={{textAlign: 'center'}}>Watch list</p>
+            <p style={{textAlign: "center"}}>Coin</p>
+            <p style={{textAlign: "end"}}>Current Price</p>
+            <p style={{textAlign: "end", width: "200px"}}>Market Capitalization</p>
+            <p style={{textAlign: "center"}}>1 Day %</p>
+            <p style={{textAlign: "center"}}>Watch Chart</p>
         </div>
     );
 }

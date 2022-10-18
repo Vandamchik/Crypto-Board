@@ -1,9 +1,9 @@
 import React from "react";
 import '../styles/App.css'
 import { HomePage } from "../pages/HomePage";
-import {Route, Routes} from "react-router-dom";
-import {WatchList} from "../pages/WatchList";
-import {Navigation} from "./Navigation";
+import { Route, Routes } from "react-router-dom";
+import { WatchList } from "../pages/WatchList";
+import { Navigation } from "./Navigation";
 
 
 export function App(): JSX.Element {

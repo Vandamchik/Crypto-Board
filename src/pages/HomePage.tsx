@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react';
-import {useAppDispatch, useAppSelector} from "../hooks/redux";
-import {fetchCrypto} from "../store/reducers/ActionCreator";
-import {CoinBoard} from "../components/CoinBoard";
+import React, { useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from "../hooks/redux";
+import { fetchCrypto } from "../store/reducers/ActionCreator";
+import { CoinBoard } from "../components/CoinBoard";
+import { TitleBoard } from "../components/TitleBoard";
 import "../styles/HomePage.css"
-import {TitleBoard} from "../components/TitleBoard";
 
 
 export function HomePage(): JSX.Element  {
@@ -18,7 +18,6 @@ export function HomePage(): JSX.Element  {
     useEffect(() => {
         dispatch(fetchCrypto())
     }, [])
-
 
     return (
         <>

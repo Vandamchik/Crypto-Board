@@ -14,9 +14,9 @@ import {
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import moment from 'moment'
-import axios, {AxiosResponse} from "axios";
-import {useActions} from "../hooks/actions";
-import {useAppSelector} from "../hooks/redux";
+import axios, { AxiosResponse } from "axios";
+import { useActions } from "../hooks/actions";
+import { useAppSelector } from "../hooks/redux";
 
 
 ChartJS.register(
@@ -30,24 +30,22 @@ ChartJS.register(
 );
 
 
-
 export function CoinBoard( props: IProps): JSX.Element {
+    const { addFavourite,removeFavourite } = useActions()
+    const {favorites} = useAppSelector(state => state.watchList)
     const { name, image, symbol, price, volume, priceChange, id } = props;
     const [chartBtn, setChartBtn] = useState<boolean>(false);
     const [chartRange, setChartRange] = useState<string>('7')
     const [chartData, setChartData] = useState<ChartData<'line'>>();
-    const { addFavourite,removeFavourite } = useActions()
-    const {favorites} = useAppSelector(state => state.watchList)
     const [isFav, setIsFav] = useState(favorites.includes(id))
 
-    function addToWatchList(event: React.MouseEvent<HTMLButtonElement>) {
+    function addToWatchList(event: React.MouseEvent<HTMLButtonElement>):void {
       event.preventDefault()
-        console.log(event);
         addFavourite(id)
         setIsFav(true)
     }
 
-    function removeToWatchList(event: React.MouseEvent<HTMLButtonElement>) {
+    function removeToWatchList(event: React.MouseEvent<HTMLButtonElement>): void {
         event.preventDefault()
         removeFavourite(id)
         setIsFav(false)
@@ -92,38 +90,37 @@ export function CoinBoard( props: IProps): JSX.Element {
     return (
         <div className="coinBoard_container">
             <div className="coinBoard_row">
-                    <img className="coinBoard_img" src={image} alt="crypto"/>
-                    <p className="coinBoard_name">{name}</p>
-                    <p className="coinBoard_symbol">{symbol}</p>
-                    <p className="coinBoard_price">${price}</p>
-                    <p className="coinBoard_volume">${volume.toLocaleString()}</p>
-                { priceChange < 0 ? (
-                    <p className="coinBoard_percent red">{priceChange.toFixed(2)}%</p>
-                    ) : (
-                    <p className="coinBoard_percent green">{priceChange.toFixed(2)}%</p>
-                )}
-                <button
-                        value={id}
-                        className='coinBoard_btn'
-                        onClick={btnHandler}
-                    >{chartBtn ? "Hide Chart" : "Show Chart"}</button>
-
                 { !isFav && <button
+                    className="coinBoard_btn"
                     value={id}
                     onClick={addToWatchList}
                 >
-                    Like
-                </button>
-                }
-
-                {isFav && <button
+                    Add
+                </button> }
+                { isFav && <button
+                    className="coinBoard_btn"
                     value={id}
                     onClick={removeToWatchList}
-                    >
-                    Dislike
-                    </button>
-                }
-
+                >
+                    Remove
+                </button> }
+                <div className="coinBoard_row_coin-title">
+                    <img className="coinBoard_img" src={image} alt="crypto"/>
+                    <p className="coinBoard_name">{name}</p>
+                    <p className="coinBoard_symbol">{symbol}</p>
+                </div>
+                    <p className="coinBoard_price">${price}</p>
+                    <p className="coinBoard_volume">${volume.toLocaleString()}</p>
+                    { priceChange < 0 ? (
+                        <p className="coinBoard_percent red">{priceChange.toFixed(2)}%</p>
+                        ) : (
+                        <p className="coinBoard_percent green">{priceChange.toFixed(2)}%</p>
+                    )}
+                <button
+                    value={id}
+                    className='coinBoard_btn'
+                    onClick={ btnHandler }
+                >{ chartBtn ? "Hide Chart" : "Show Chart" }</button>
             </div>
                 { chartBtn && <div className="chartRate_container">
                     <select
@@ -131,17 +128,13 @@ export function CoinBoard( props: IProps): JSX.Element {
                         onChange={(e) => {
                             setChartRange(e.target.value);
                             changeHandler(chartRange!)
-                        }
-                    }
+                        }}
                     >
-                        <option
-                            className="chartRate_option"
-                            value="7">30 Days</option>
+                        <option value="7">30 Days</option>
                         <option value="30">7 Days</option>
                     </select>
-                    {chartData ? <Line data={chartData} /> : <p>Loading...</p>}
+                    { chartData ? <Line data={chartData} /> : <p>Loading...</p> }
                 </div> }
-
         </div>
     );
 }

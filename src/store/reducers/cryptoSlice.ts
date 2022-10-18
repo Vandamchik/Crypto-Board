@@ -3,7 +3,6 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { fetchCrypto } from "./ActionCreator";
 
 
-
 const initialState: CryptoState = {
     crypto: [],
     isLoading: false,

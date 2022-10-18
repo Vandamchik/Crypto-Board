@@ -1,5 +1,3 @@
-import exp from "constants";
-
 export interface ICryptoData  {
     id: string;
     symbol: string;
@@ -35,7 +33,6 @@ export interface IChartData {
     prices: number[]
     total_volumes: number[]
 }
-
 
 export interface IProps {
     name: string

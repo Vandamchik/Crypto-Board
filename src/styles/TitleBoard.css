@@ -1,5 +1,12 @@
 .titleBoard-wrapper {
+    width: 100%;
+    margin: 10px 0;
     display: flex;
-    justify-content: space-around;
-    width: 700px
+    justify-content: space-evenly;
+    font-weight: bold;
 }
+
+.titleBoard-wrapper > p {
+    width: 150px;
+}
+

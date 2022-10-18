@@ -3,16 +3,17 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border: 1px solid black;
-    border-radius: 20px;
 }
 .input-search {
-    margin-top: 20px;
+    margin: 20px 0;
     border-radius: 20px;
     width: 300px;
-    padding: 5px;
+    padding: 10px;
     outline: none;
-    border: none;
-    background-image: linear-gradient(-225deg, #ac32e4 0%, #7918f2 48%, #4801ff 100%);
-    color: white;
+    border: 1px solid #07bcb4;
+    background-color: white;
+}
+
+.input-search:hover {
+    box-shadow: 5px 3px 3px grey;
 }
