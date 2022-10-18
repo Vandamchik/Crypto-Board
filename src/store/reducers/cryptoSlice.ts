@@ -1,12 +1,8 @@
-import { ICryptoData } from "../../modules/modules";
+import { CryptoState, ICryptoData } from "../../modules/modules";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { fetchCrypto } from "./ActionCreator";
 
-interface CryptoState {
-    crypto: ICryptoData[]
-    isLoading: boolean
-    error: string
-}
+
 
 const initialState: CryptoState = {
     crypto: [],

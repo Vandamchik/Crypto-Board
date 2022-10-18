@@ -1,0 +1,14 @@
+.navigation-wrapper {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 50px;
+    padding: 10px;
+    background-color: burlywood;
+    color: white;
+    font-weight: bold;
+}
+
+span :nth-child(1){
+    margin-right: 20px;
+}

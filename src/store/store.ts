@@ -1,8 +1,10 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import cryptoReducer from "./reducers/cryptoSlice";
+import {watchListReducer} from "./reducers/watchListSlice";
 
 const rootReducer = combineReducers({
-     cryptoReducer
+     cryptoReducer,
+    watchList: watchListReducer
 })
 
 export const setupStore = () => {

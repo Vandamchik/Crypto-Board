@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState } from 'react';
 import { IChartData, IProps } from "../modules/modules";
 import '../styles/CoinBoard.css'
-import type { ChartData, ChartOptions } from 'chart.js';
+import type { ChartData } from 'chart.js';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -15,6 +15,9 @@ import {
 import { Line } from 'react-chartjs-2';
 import moment from 'moment'
 import axios, {AxiosResponse} from "axios";
+import {useActions} from "../hooks/actions";
+import {useAppSelector} from "../hooks/redux";
+
 
 ChartJS.register(
     CategoryScale,
@@ -31,48 +34,51 @@ ChartJS.register(
 export function CoinBoard( props: IProps): JSX.Element {
     const { name, image, symbol, price, volume, priceChange, id } = props;
     const [chartBtn, setChartBtn] = useState<boolean>(false);
-    const [chartRange, setChartRange] = useState<string>("7")
+    const [chartRange, setChartRange] = useState<string>('7')
     const [chartData, setChartData] = useState<ChartData<'line'>>();
-    const [chartOptions, setChartOptions] = useState<ChartOptions<'line'>>({
-        responsive: true,
-        plugins: {
-            legend: {
-                position: 'top' as const,
-            },
-            title: {
-                display: true,
-                text: 'Cypto Chart',
-            },
-        },
-    })
+    const { addFavourite,removeFavourite } = useActions()
+    const {favorites} = useAppSelector(state => state.watchList)
+    const [isFav, setIsFav] = useState(favorites.includes(id))
 
+    function addToWatchList(event: React.MouseEvent<HTMLButtonElement>) {
+      event.preventDefault()
+        console.log(event);
+        addFavourite(id)
+        setIsFav(true)
+    }
 
-    function btnHandler(event:React.MouseEvent<HTMLButtonElement>){
+    function removeToWatchList(event: React.MouseEvent<HTMLButtonElement>) {
+        event.preventDefault()
+        removeFavourite(id)
+        setIsFav(false)
+    }
+
+    function btnHandler(event:React.MouseEvent<HTMLButtonElement>): void {
         setChartBtn(prev => !prev)
             axios.get<IChartData>(`https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=30&interval=daily`)
                 .then((response:AxiosResponse) => {
-             setChartData({
+                 setChartData({
                  labels: response.data.prices.map((price: number[]) => {return moment.unix(price[0] / 1000).format("MM-DD")}),
                  datasets: [
-                     {
-                         label: 'Dataset 1',
-                         data: response.data.prices.map((price: number[]) => {return price[1]}),
-                         borderColor: 'rgb(255, 99, 132)',
-                         backgroundColor: 'rgba(255, 99, 132, 0.5)',
-                     },
-                 ],
-             })
+                        {
+                             label: '30 Days Chart',
+                            data: response.data.prices.map((price: number[]) => {return price[1]}),
+                            borderColor: 'rgb(255, 99, 132)',
+                            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                         },
+                    ],
+                })
             })
     }
 
-    function changeHandler(limit: string) {
-        axios.get<IChartData>(`https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=${limit}&interval=daily`)
+    function changeHandler( rateTimeInterval: string): void {
+        axios.get<IChartData>(`https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=${rateTimeInterval}&interval=daily`)
             .then((response:AxiosResponse) => {
                 setChartData({
                     labels: response.data.prices.map((price: number[]) => {return moment.unix(price[0] / 1000).format("MM-DD")}),
                     datasets: [
                         {
-                            label: 'Dataset 1',
+                            label: `${rateTimeInterval} Days Chart`,
                             data: response.data.prices.map((price: number[]) => {return price[1]}),
                             borderColor: 'rgb(255, 99, 132)',
                             backgroundColor: 'rgba(255, 99, 132, 0.5)',
@@ -80,7 +86,6 @@ export function CoinBoard( props: IProps): JSX.Element {
                     ],
                 })
             })
-
     }
 
 
@@ -97,27 +102,44 @@ export function CoinBoard( props: IProps): JSX.Element {
                     ) : (
                     <p className="coinBoard_percent green">{priceChange.toFixed(2)}%</p>
                 )}
-                    <button
+                <button
                         value={id}
-                        className='chartRate_btn'
+                        className='coinBoard_btn'
                         onClick={btnHandler}
                     >{chartBtn ? "Hide Chart" : "Show Chart"}</button>
+
+                { !isFav && <button
+                    value={id}
+                    onClick={addToWatchList}
+                >
+                    Like
+                </button>
+                }
+
+                {isFav && <button
+                    value={id}
+                    onClick={removeToWatchList}
+                    >
+                    Dislike
+                    </button>
+                }
+
             </div>
                 { chartBtn && <div className="chartRate_container">
-
                     <select
-                        onChange={(event) => {
-                            setChartRange( event.target.value);
-                            console.log(chartRange)
-                            changeHandler(chartRange)
+                        className="chartRate_select"
+                        onChange={(e) => {
+                            setChartRange(e.target.value);
+                            changeHandler(chartRange!)
                         }
                     }
                     >
-                        <option value="7">30 days</option>
-                        <option value="30">7 days</option>
+                        <option
+                            className="chartRate_option"
+                            value="7">30 Days</option>
+                        <option value="30">7 Days</option>
                     </select>
-
-                    {chartData ? <Line data={chartData} options={chartOptions} /> : <p>Loading...</p>}
+                    {chartData ? <Line data={chartData} /> : <p>Loading...</p>}
                 </div> }
 
         </div>

@@ -1,3 +1,5 @@
+import exp from "constants";
+
 export interface ICryptoData  {
     id: string;
     symbol: string;
@@ -43,5 +45,15 @@ export interface IProps {
     volume: number
     priceChange: number
     id:string
+}
+
+export interface IWatchListSlice {
+    favorites: string[]
+}
+
+export interface CryptoState {
+    crypto: ICryptoData[]
+    isLoading: boolean
+    error: string
 }
 

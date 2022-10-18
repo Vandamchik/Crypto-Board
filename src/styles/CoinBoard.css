@@ -50,11 +50,15 @@
     color: green;
 }
 
-.chartRate_btn {
+.coinBoard_btn {
     padding: 10px;
     background-color: darkslategray;
     color: white;
     border-radius: 20px;
+    cursor: pointer;
+}
+.coinBoard_btn:hover {
+    color: lightgreen;
 }
 
 .chartRate_container {
@@ -63,4 +67,16 @@
     align-items: center;
     justify-content: center;
     width: 600px;
+}
+.chartRate_select {
+    padding: 5px;
+    width: 100px;
+    border-radius: 7px;
+    cursor: pointer;
+    background-color: antiquewhite;
+    border: none;
+    outline: none;
+}
+.chartRate_select:hover {
+    color: lightsalmon;
 }
